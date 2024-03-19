@@ -39,6 +39,33 @@ resource "aws_db_instance" "db_fence" {
     ignore_changes = ["engine_version","storage_encrypted","identifier"]
   }
 }
+// Create a secret for the fence database
+resource "aws_secretsmanager_secret" "db_credentials_fence" {
+  name                        = "${var.vpc_name}-fence"
+  description                 = "Fence database credentials"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+// Create a secret version for the fence database
+resource "aws_secretsmanager_secret_version" "db_credentials_fence" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_fence.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_fence.name}",
+  "host": "${aws_db_instance.db_fence.address}",
+  "password": "${aws_db_instance.db_fence.password}",
+  "port": "${aws_db_instance.db_fence.port}",
+  "username": "${aws_db_instance.db_fence.username}"
+}
+EOF
+}
 
 resource "aws_db_instance" "db_gdcapi" {
   count                       = "${var.deploy_sheepdog_db ? 1 : 0}"
@@ -76,6 +103,34 @@ resource "aws_db_instance" "db_gdcapi" {
     ignore_changes = ["engine_version","storage_encrypted","identifier"]
   }
 }
+// Create a secret for the gdcapi database
+resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
+  name                        = "${var.vpc_name}-gdcapi"
+  description                 = "GDC API database credentials"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+// Create a secret version for the gdcapi database
+resource "aws_secretsmanager_secret_version" "db_credentials_gdcapi" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_gdcapi.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_gdcapi.name}",
+  "host": "${aws_db_instance.db_gdcapi.address}",
+  "password": "${aws_db_instance.db_gdcapi.password}",
+  "port": "${aws_db_instance.db_gdcapi.port}",
+  "username": "${aws_db_instance.db_gdcapi.username}"
+}
+EOF
+}
+
 
 resource "aws_db_instance" "db_indexd" {
   count                       = "${var.deploy_indexd_db ? 1 : 0}"
@@ -113,6 +168,35 @@ resource "aws_db_instance" "db_indexd" {
     ignore_changes = ["engine_version","storage_encrypted","identifier"]
   }
 }
+// Create a secret for the indexd database
+resource "aws_secretsmanager_secret" "db_credentials_indexd" {
+  name        = "${var.vpc_name}-indexd"
+  description = "Indexd database credentials"
+  # Optional configurations commented out
+  # recovery_window_in_days = 7
+  # rotation_lambda_arn     = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days = 30
+  # }
+  tags = {
+    Environment   = "${var.vpc_name}"
+    Organization  = "${var.organization_name}"
+  }
+}
+// Create a secret version for the indexd database
+resource "aws_secretsmanager_secret_version" "db_credentials_indexd" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_indexd.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_indexd.name}",
+  "host": "${aws_db_instance.db_indexd.address}",
+  "password": "${aws_db_instance.db_indexd.password}",
+  "port": "${aws_db_instance.db_indexd.port}",
+  "username": "${aws_db_instance.db_indexd.username}"
+}
+EOF
+}
+
 
 # See https://www.postgresql.org/docs/9.6/static/runtime-config-logging.html
 # and https://www.postgresql.org/docs/9.6/static/runtime-config-query.html#RUNTIME-CONFIG-QUERY-ENABLE
