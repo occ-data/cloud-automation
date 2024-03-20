@@ -41,7 +41,7 @@ resource "aws_db_instance" "db_fence" {
 }
 // Create a secret for the fence database
 resource "aws_secretsmanager_secret" "db_credentials_fence" {
-  name                        = "${var.vpc_name}-fence"
+  name                        = "${var.vpc_name}-fence-creds"
   description                 = "Fence database credentials"
   # recovery_window_in_days     = 7
   # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
@@ -53,9 +53,38 @@ resource "aws_secretsmanager_secret" "db_credentials_fence" {
     Organization              = "${var.organization_name}"
   }
 }
+
 // Create a secret version for the fence database
 resource "aws_secretsmanager_secret_version" "db_credentials_fence" {
   secret_id     = "${aws_secretsmanager_secret.db_credentials_fence.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_fence.name}",
+  "host": "${aws_db_instance.db_fence.address}",
+  "password": "${aws_db_instance.db_fence.password}",
+  "port": "${aws_db_instance.db_fence.port}",
+  "username": "${aws_db_instance.db_fence.username}"
+}
+EOF
+}
+
+// Create a secret for arborist database
+resource "aws_secretsmanager_secret" "db_credentials_arborist" {
+  name                        = "${var.vpc_name}-arborist-creds"
+  description                 = "arborist database credentials"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "db_credentials_arborist" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_arborist.id}"
   secret_string = <<EOF
 {
   "database": "${aws_db_instance.db_fence.name}",
@@ -105,7 +134,7 @@ resource "aws_db_instance" "db_gdcapi" {
 }
 // Create a secret for the gdcapi database
 resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
-  name                        = "${var.vpc_name}-gdcapi"
+  name                        = "${var.vpc_name}-gdcapi-creds"
   description                 = "GDC API database credentials"
   # recovery_window_in_days     = 7
   # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
@@ -120,6 +149,64 @@ resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
 // Create a secret version for the gdcapi database
 resource "aws_secretsmanager_secret_version" "db_credentials_gdcapi" {
   secret_id     = "${aws_secretsmanager_secret.db_credentials_gdcapi.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_gdcapi.name}",
+  "host": "${aws_db_instance.db_gdcapi.address}",
+  "password": "${aws_db_instance.db_gdcapi.password}",
+  "port": "${aws_db_instance.db_gdcapi.port}",
+  "username": "${aws_db_instance.db_gdcapi.username}"
+}
+EOF
+}
+
+// Create a secret for sheepdog database
+resource "aws_secretsmanager_secret" "db_credentials_sheepdog" {
+  name                        = "${var.vpc_name}-sheepdog-creds"
+  description                 = "Sheepdog database credentials"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+
+// Create a secret version for the sheepdog database
+resource "aws_secretsmanager_secret_version" "db_credentials_sheepdog" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_sheepdog.id}"
+  secret_string = <<EOF
+{
+  "database": "${aws_db_instance.db_gdcapi.name}",
+  "host": "${aws_db_instance.db_gdcapi.address}",
+  "password": "${aws_db_instance.db_gdcapi.password}",
+  "port": "${aws_db_instance.db_gdcapi.port}",
+  "username": "${aws_db_instance.db_gdcapi.username}"
+}
+EOF
+}
+
+// Create a secret for the peregrine database
+resource "aws_secretsmanager_secret" "db_credentials_peregrine" {
+  name                        = "${var.vpc_name}-peregrine-creds"
+  description                 = "Peregrine database credentials"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+
+// Create a secret version for the peregrine database
+resource "aws_secretsmanager_secret_version" "db_credentials_peregrine" {
+  secret_id     = "${aws_secretsmanager_secret.db_credentials_peregrine.id}"
   secret_string = <<EOF
 {
   "database": "${aws_db_instance.db_gdcapi.name}",
@@ -170,7 +257,7 @@ resource "aws_db_instance" "db_indexd" {
 }
 // Create a secret for the indexd database
 resource "aws_secretsmanager_secret" "db_credentials_indexd" {
-  name        = "${var.vpc_name}-indexd"
+  name        = "${var.vpc_name}-indexd-creds"
   description = "Indexd database credentials"
   # Optional configurations commented out
   # recovery_window_in_days = 7
