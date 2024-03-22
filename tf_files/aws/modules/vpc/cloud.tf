@@ -321,7 +321,7 @@ resource "aws_iam_access_key" "es_user_key" {
 }
 
 resource "aws_secretsmanager_secret" "es_aws_credentials" {
-  name                        = "aws-es-proxy-aws-credentials"
+  name                        = "${var.vpc_name}-aws-es-proxy-creds"
   description                 = "elasticsearch user creds"
   # recovery_window_in_days     = 7
   # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
