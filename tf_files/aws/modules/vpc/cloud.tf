@@ -320,4 +320,27 @@ resource "aws_iam_access_key" "es_user_key" {
   user = "${aws_iam_user.es_user.name}"
 }
 
+resource "aws_secretsmanager_secret" "es_aws_credentials" {
+  name                        = "aws-es-proxy-aws-credentials"
+  description                 = "elasticsearch user creds"
+  # recovery_window_in_days     = 7
+  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+  # rotation_rules {
+  #   automatically_after_days  = 30
+  # }
+  tags = {
+    Environment               = "${var.vpc_name}"
+    Organization              = "${var.organization_name}"
+  }
+}
+
+// Create a secret version for the sheepdog database
+resource "aws_secretsmanager_secret_version" "es_aws_credentials" {
+  secret_id     = "${aws_secretsmanager_secret.es_aws_credentials.id}"
+  secret_string = <<EOF
+[default]
+  aws_access_key_id=${aws_iam_access_key.es_user_key.id}
+  aws_secret_access_key=${aws_iam_access_key.es_user_key.secret}
+EOF
+}
 
