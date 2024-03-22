@@ -63,7 +63,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_fence" {
   "host": "${aws_db_instance.db_fence.address}",
   "password": "${aws_db_instance.db_fence.password}",
   "port": "${aws_db_instance.db_fence.port}",
-  "username": "${aws_db_instance.db_fence.username}"
+  "username": "${aws_db_instance.db_fence.username}",
+  "dbcreated": "true"
 }
 EOF
 }
@@ -91,7 +92,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_arborist" {
   "host": "${aws_db_instance.db_fence.address}",
   "password": "${aws_db_instance.db_fence.password}",
   "port": "${aws_db_instance.db_fence.port}",
-  "username": "${aws_db_instance.db_fence.username}"
+  "username": "${aws_db_instance.db_fence.username}",
+  "dbcreated": "true"
 }
 EOF
 }
@@ -155,7 +157,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_gdcapi" {
   "host": "${aws_db_instance.db_gdcapi.address}",
   "password": "${aws_db_instance.db_gdcapi.password}",
   "port": "${aws_db_instance.db_gdcapi.port}",
-  "username": "${aws_db_instance.db_gdcapi.username}"
+  "username": "${aws_db_instance.db_gdcapi.username}",
+  "dbcreated": "true"
 }
 EOF
 }
@@ -184,7 +187,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_sheepdog" {
   "host": "${aws_db_instance.db_gdcapi.address}",
   "password": "${aws_db_instance.db_gdcapi.password}",
   "port": "${aws_db_instance.db_gdcapi.port}",
-  "username": "${aws_db_instance.db_gdcapi.username}"
+  "username": "${aws_db_instance.db_gdcapi.username}",
+  "dbcreated": "true"
 }
 EOF
 }
@@ -213,7 +217,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_peregrine" {
   "host": "${aws_db_instance.db_gdcapi.address}",
   "password": "${aws_db_instance.db_gdcapi.password}",
   "port": "${aws_db_instance.db_gdcapi.port}",
-  "username": "${aws_db_instance.db_gdcapi.username}"
+  "username": "${aws_db_instance.db_gdcapi.username}",
+  "dbcreated": "true"
 }
 EOF
 }
@@ -279,7 +284,8 @@ resource "aws_secretsmanager_secret_version" "db_credentials_indexd" {
   "host": "${aws_db_instance.db_indexd.address}",
   "password": "${aws_db_instance.db_indexd.password}",
   "port": "${aws_db_instance.db_indexd.port}",
-  "username": "${aws_db_instance.db_indexd.username}"
+  "username": "${aws_db_instance.db_indexd.username}",
+  "dbcreated": "true"
 }
 EOF
 }
