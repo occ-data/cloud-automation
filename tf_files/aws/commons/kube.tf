@@ -133,7 +133,7 @@ resource "aws_db_instance" "db_gdcapi" {
     #ignore_changes  = ["*"]
     ignore_changes = ["engine_version","storage_encrypted","identifier"]
   }
-# }
+}
 # // Create a secret for the gdcapi database
 # resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
 #   name                        = "${var.vpc_name}-gdcapi-creds"
