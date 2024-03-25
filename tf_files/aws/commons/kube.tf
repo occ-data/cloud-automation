@@ -133,35 +133,35 @@ resource "aws_db_instance" "db_gdcapi" {
     #ignore_changes  = ["*"]
     ignore_changes = ["engine_version","storage_encrypted","identifier"]
   }
-}
-// Create a secret for the gdcapi database
-resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
-  name                        = "${var.vpc_name}-gdcapi-creds"
-  description                 = "GDC API database credentials"
-  # recovery_window_in_days     = 7
-  # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
-  # rotation_rules {
-  #   automatically_after_days  = 30
-  # }
-  tags = {
-    Environment               = "${var.vpc_name}"
-    Organization              = "${var.organization_name}"
-  }
-}
-// Create a secret version for the gdcapi database
-resource "aws_secretsmanager_secret_version" "db_credentials_gdcapi" {
-  secret_id     = "${aws_secretsmanager_secret.db_credentials_gdcapi.id}"
-  secret_string = <<EOF
-{
-  "database": "${aws_db_instance.db_gdcapi.name}",
-  "host": "${aws_db_instance.db_gdcapi.address}",
-  "password": "${aws_db_instance.db_gdcapi.password}",
-  "port": "${aws_db_instance.db_gdcapi.port}",
-  "username": "${aws_db_instance.db_gdcapi.username}",
-  "dbcreated": "true"
-}
-EOF
-}
+# }
+# // Create a secret for the gdcapi database
+# resource "aws_secretsmanager_secret" "db_credentials_gdcapi" {
+#   name                        = "${var.vpc_name}-gdcapi-creds"
+#   description                 = "GDC API database credentials"
+#   # recovery_window_in_days     = 7
+#   # rotation_lambda_arn         = "${var.rotation_lambda_arn}"
+#   # rotation_rules {
+#   #   automatically_after_days  = 30
+#   # }
+#   tags = {
+#     Environment               = "${var.vpc_name}"
+#     Organization              = "${var.organization_name}"
+#   }
+# }
+# // Create a secret version for the gdcapi database
+# resource "aws_secretsmanager_secret_version" "db_credentials_gdcapi" {
+#   secret_id     = "${aws_secretsmanager_secret.db_credentials_gdcapi.id}"
+#   secret_string = <<EOF
+# {
+#   "database": "${aws_db_instance.db_gdcapi.name}",
+#   "host": "${aws_db_instance.db_gdcapi.address}",
+#   "password": "${aws_db_instance.db_gdcapi.password}",
+#   "port": "${aws_db_instance.db_gdcapi.port}",
+#   "username": "${aws_db_instance.db_gdcapi.username}",
+#   "dbcreated": "true"
+# }
+# EOF
+# }
 
 // Create a secret for sheepdog database
 resource "aws_secretsmanager_secret" "db_credentials_sheepdog" {
