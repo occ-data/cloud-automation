@@ -239,12 +239,12 @@ resource "aws_route" "skip_proxy" {
   depends_on             = ["aws_route_table.eks_private"]
 }
 
-resource "aws_route" "public_access" {
-  count                  = "${var.ha_squid ? var.dual_proxy ? 1 : 0 : 1}"
-  destination_cidr_block = "0.0.0.0/0"
-  route_table_id         = "${aws_route_table.eks_private.id}"
-  instance_id            = "${data.aws_instances.squid_proxy.ids[0]}"
-}
+# resource "aws_route" "public_access" {
+#   count                  = "${var.ha_squid ? var.dual_proxy ? 1 : 0 : 1}"
+#   destination_cidr_block = "0.0.0.0/0"
+#   route_table_id         = "${aws_route_table.eks_private.id}"
+#   instance_id            = "${data.aws_instances.squid_proxy.ids[0]}"
+# }
 
 resource "aws_route_table_association" "private_kube" {
   count          = "${random_shuffle.az.result_count}"

@@ -113,12 +113,13 @@ data "aws_autoscaling_group" "squid_auto" {
   name = "squid-auto-${var.vpc_name}"
 }
 
-data "aws_instances" "squid_proxy" {
-  count         = "${var.ha_squid ? var.dual_proxy ? 1 : 0 : 1}"
-  instance_tags = {
-    Name = "${var.vpc_name}${var.proxy_name}"
-  }
-}
+# data "aws_instances" "squid_proxy" {
+#   # count         = "${var.ha_squid ? var.dual_proxy ? 1 : 0 : 1}"
+#   count = 0
+#   instance_tags = {
+#     Name = "${var.vpc_name}${var.proxy_name}"
+#   }
+# }
 
 
 # get the private kube table id

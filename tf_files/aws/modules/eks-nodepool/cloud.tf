@@ -381,3 +381,20 @@ resource "aws_security_group" "ssh" {
     Name         = "ssh_eks_${var.vpc_name}-nodepool-${var.nodepool}"
   }
 }
+
+# resource "aws_eks_node_group" "eks_node_group" {
+#   cluster_name    = "${var.vpc_name}"
+#   node_group_name = "${var.nodepool}"
+#   node_role_arn   = "${aws_iam_role.eks_node_role.arn}"
+#   subnet_ids      = ["${var.eks_private_subnets}"]
+#   scaling_config {
+#     desired_size = "${var.nodepool_asg_desired_capacity}"
+#     max_size     = "${var.nodepool_asg_max_size}"
+#     min_size     = "${var.nodepool_asg_min_size}"
+#   }
+#   tags = {
+#     Environment  = "${var.vpc_name}"
+#     Organization = "${var.organization_name}"
+#     Name         = "${var.nodepool}"
+#   }
+# }
